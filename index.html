@@ -4,15 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ankademin Quiz</title>
+    <link rel="stylesheet" href="style.css">
     <script src="index.js" defer></script>
     
 </head>
 <body>
     <h1>Film Quiz</h1>
-    <div id="question"></div>
+    <div id="question-box">
+        <button id="start-btn" class="start-btn btn">Start</button>
+        <div id="question"></div>
+    </div>
+
+    
+
     <form id="optionsForm">
         <div id="options"></div>
-        <button id="submit" type="button">Submit Quiz</button>
+        <button id="submit-btn" class="submit-btn btn hide">Submit</button>
     </form>
 
 

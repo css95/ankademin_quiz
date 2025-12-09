@@ -51,13 +51,25 @@ const questions = [
     }
 ];
 
-const questionElement = document.getElementById("question");
-const optionsElement = document.getElementById("options");
-const submitButton = document.getElementById("submit");
+const questionBoxElement = document.getElementById('question-box');
+const questionElement = document.getElementById('question');
+const optionsElement = document.getElementById('options');
+const startButton = document.getElementById('start-btn');
+const submitButton = document.getElementById('submit-btn');
 
 let score = 0;
 
-for(let i=0; i<questions.length; i++) {
+startButton.addEventListener('click', startQuiz);
+
+function startQuiz() {
+    console.log('Started');
+    startButton.classList.add('hide');
+    questionBoxElement.classList.remove('hide');
+    setNextQuestion()
+}
+
+function setNextQuestion() {
+    for(let i=0; i<questions.length; i++) {
     let currentQuestion = questions[i];
     console.log(currentQuestion.text);
     questionElement.textContent = currentQuestion.text;
@@ -73,3 +85,4 @@ for(let i=0; i<questions.length; i++) {
 
 }
 
+}
