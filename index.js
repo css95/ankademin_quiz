@@ -6,7 +6,7 @@ const questions = [
     },
     {
         text: "2. Leonardo DiCaprio har vunnit en Oscar för filmen The Revenant.",
-        options: ["true", "false", "neither"],
+        options: ["true", "false"],
         correctIndex: 0
     },
     {
@@ -55,22 +55,30 @@ const questionBoxElement = document.getElementById('question-box');
 const questionElement = document.getElementById('question');
 const optionsElement = document.getElementById('options');
 const textBoxElement = document.getElementById('text-box');
+const bodyElement = document.querySelector('body');
+const h1Element = document.querySelector('h1');
 
+const darkmodeButton = document.getElementById('darkmode-btn');
 const startButton = document.getElementById('start-btn');
 const nextButton = document.getElementById('next-btn');
+const restartButton = document.getElementById('restart-btn');
 const form = document.getElementById('optionsForm');
 
 let score = 0;
 let currentQuestionIndex = 0; 
+let isDarkmode = false;
 
 startButton.addEventListener('click', startQuiz);
 nextButton.addEventListener('click', handleNextQuestion);
+restartButton.addEventListener('click', startQuiz);
+darkmodeButton.addEventListener('click', switchDarkmode);
 
 function startQuiz() {
     console.log('Started');
     startButton.classList.add('hide');
-    questionBoxElement.classList.remove('hide');
     nextButton.classList.remove('hide');
+    form.classList.remove('hide');
+    restartButton.classList.add('hide');
     textBoxElement.classList.add('hide');
     currentQuestionIndex = 0;
     score = 0;
@@ -130,7 +138,7 @@ function handleNextQuestion(event) {
 
 function endQuiz() {
     textBoxElement.classList.remove('hide');
-    textBoxElement.innerText = `Quiz finished! Your score is ${score}/${questions.length}`;
+    textBoxElement.innerText = `Quiz finished! \n Your score is ${score}/${questions.length} = ${Math.round(100 * score/questions.length)}%`;
     form.classList.add('hide');
 
     if (score/questions.length < 0.5) {
@@ -139,6 +147,33 @@ function endQuiz() {
         textBoxElement.style.color = "#ffb700ff";
     } else {
         textBoxElement.style.color = "#00920cff";
+    }
+
+    restartButton.classList.remove('hide');
+}
+
+function switchDarkmode() {
+    if(isDarkmode) {
+        isDarkmode = false;
+    } else {
+        isDarkmode = true;
+    }
+    console.log(`Darkmode: ${isDarkmode}`);
+
+     if(isDarkmode) {
+        darkmodeButton.innerText = " ☀️ Light mode";
+        bodyElement.style.backgroundColor = "#130042ff";
+        textBoxElement.style.color = "white";
+        questionElement.style.color = "white";
+        optionsElement.style.color = "white";
+        h1Element.style.color = "white";
+    } else {
+        darkmodeButton.innerText = " 🌙 Dark Mode";
+        bodyElement.style.backgroundColor = "#fff";
+        textBoxElement.style.color = "black";
+        questionElement.style.color = "black";
+        optionsElement.style.color = "black";
+        h1Element.style.color = "black";
     }
 
 
