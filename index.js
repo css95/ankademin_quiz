@@ -1,18 +1,24 @@
+// QUIZ QUESTIONS 
+// Quiz questions have 3 types: true/false[0], multiple choice[1], or multiple correct answers/checkbox[2].
+// Type 0 and 1 use radio buttons, type 2 uses checkboxes. 
 const questions = [
     {
-        text: "1. Filmen Titanic släpptes år 1997.",
+        text: "Filmen Titanic släpptes år 1997.",
         options: ["true", "false"],
-        correctIndex: 0
+        correctIndex: 0,
+        type: 0
     },
     {
-        text: "2. Leonardo DiCaprio har vunnit en Oscar för filmen The Revenant.",
-        options: ["true", "false"],
-        correctIndex: 0
+        text: "För vilken film vann Leonardo DiCaprio en Oscar?",
+        options: ["Titanic", "Blood Diamond", "The Revenant", "The Woolf of Wall Street"],
+        correctIndex: 2,
+        type: 1
     },
     {
-        text: "3. Avatar(2009) är regisserad av Steven Spielberg.",
-        options: ["true", "false"],
-        correctIndex: 1
+        text: "Vilka av dessa är INTE Harry Potter filmer?",
+        options: ["Harry Potter och de vises sten", "Harry Potter och Gandalf på äventyr", "Harry Potter och Dumbledors armé", "Harry Potter och fången från Azkaban"],
+        correctIndex: [1, 2],
+        type: 2
     },
     // {
     //     text: "4. Harry Potter filmerna är baserade på böcker skrivna av J.R.R. Tolkien.",
@@ -51,6 +57,7 @@ const questions = [
     // }
 ];
 
+// GETTING ELEMENTS FROM THE HTML 
 const questionBoxElement = document.getElementById('question-box');
 const questionElement = document.getElementById('question');
 const optionsElement = document.getElementById('options');
@@ -58,21 +65,29 @@ const textBoxElement = document.getElementById('text-box');
 const bodyElement = document.querySelector('body');
 const h1Element = document.querySelector('h1');
 
+// ALL BUTTON ELEMENTS
 const darkmodeButton = document.getElementById('darkmode-btn');
 const startButton = document.getElementById('start-btn');
 const nextButton = document.getElementById('next-btn');
 const restartButton = document.getElementById('restart-btn');
 const form = document.getElementById('optionsForm');
 
+// VARIABLES
 let score = 0;
 let currentQuestionIndex = 0; 
 let isDarkmode = false;
 
+// EVENT LISTENERS
 startButton.addEventListener('click', startQuiz);
 nextButton.addEventListener('click', handleNextQuestion);
 restartButton.addEventListener('click', startQuiz);
 darkmodeButton.addEventListener('click', switchDarkmode);
 
+
+// FUNCTIONS
+
+// START QUIZ
+// Start the quiz, hide buttons, set score to 0
 function startQuiz() {
     console.log('Started');
     startButton.classList.add('hide');
@@ -85,48 +100,122 @@ function startQuiz() {
     showQuestion();
 }
 
+// SHOW QUESTION
+// Show the question with either radio button or checkbox, depending on type 
 function showQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
 
-    questionElement.textContent = currentQuestion.text;
+    questionElement.textContent = (currentQuestionIndex + 1) + ". " + currentQuestion.text;
 
     optionsElement.innerHTML = "";
 
-    currentQuestion.options.forEach(function(option, index) {
-        const label = document.createElement('label');
-        const input = document.createElement('input');
+    if (currentQuestion.type === 0 || currentQuestion.type == 1) {
 
-        input.type = 'radio';
-        input.name = 'answer';
-        input.value = index; 
+        for (let i = 0; i < currentQuestion.options.length; i++) {
+            const optionText = currentQuestion.options[i];
 
-        label.appendChild(input);
-        label.append(` ${index + 1}. ${option}`);
+            const label = document.createElement('label');
+            const input = document.createElement('input');
 
-        const br = document.createElement('br');
-        optionsElement.appendChild(label);
-        optionsElement.appendChild(br);
-    }); 
+            input.type = 'radio';
+            input.name = 'answer';
+            input.value = i; 
+
+            label.appendChild(input);
+            label.append(" " + (i + 1) + ". " + optionText);
+
+            const lineBreak = document.createElement('br');
+            optionsElement.appendChild(label);
+            optionsElement.appendChild(lineBreak);
+        }
+
+    } else if (currentQuestion.type === 2) {
+
+        for (let i = 0; i < currentQuestion.options.length; i++) {
+            const optionText = currentQuestion.options[i];
+
+            const label = document.createElement('label');
+            const input = document.createElement('input');
+
+            input.type = 'checkbox';
+            input.name = 'answer';
+            input.value = i;
+
+            label.appendChild(input);
+            label.append(" " + (i + 1) + ". " + optionText);
+
+            const lineBreak = document.createElement('br');
+            optionsElement.appendChild(label);
+            optionsElement.appendChild(lineBreak);
+        }
+    }
 }
 
-function handleNextQuestion(event) {
-    event.preventDefault();
-
-    const selectedAnswer = form.elements['answer'].value;
-
-    if(selectedAnswer === "") {
-        alert("Välj ett alternativ först!");
-        return;
-    }
-
-    const selectedIndex = parseInt(selectedAnswer, 10);
+// HANDLE THE NEXT QUESTION 
+// Answering, submitting and next question 
+function handleNextQuestion() {
+    
     const currentQuestion = questions[currentQuestionIndex];
 
-    if (selectedIndex === currentQuestion.correctIndex) {
-        score++;
+    // Answers of type 0 and 1 (radio buttons with a single correct answer)
+    if (currentQuestion.type === 0 || currentQuestion.type == 1) {
+
+        let selectedAnswer = form.elements['answer'].value;
+
+        if(selectedAnswer === "") {
+            alert("Välj ett alternativ först!");
+            return;
+        }
+
+        const selectedIndex = parseInt(selectedAnswer, 10);
+
+        if (selectedIndex === currentQuestion.correctIndex) {
+            score++;
+        }
+
+// Answers of type 2 (checkboxes with multiple correct answers)
+    } else if (currentQuestion.type === 2) {
+
+        const answers = form.elements['answer'];
+        const correctIndexes = currentQuestion.correctIndex;;
+        let selectedIndexes = [];
+
+        for(let i = 0; i < answers.length; i++) {
+            if (answers[i].checked === true) {
+                selectedIndexes.push(parseInt(answers[i].value, 10));
+            }
+        }
+
+        if (selectedIndexes.length === 0) {
+            alert("Välj minst ett alternativ först!");
+            return;
+        }
+
+        let isCorrect = true;
+
+        if (selectedIndexes.length !== correctIndexes.length) {
+            isCorrect = false;
+        }
+
+        for (let i = 0; i < correctIndexes.length; i++) {
+            const correctIndex = correctIndexes[i];
+
+            if(selectedIndexes.indexOf(correctIndex) === -1) {
+                isCorrect = false;
+                break;
+            }
+        }
+
+        if (isCorrect === true) {
+            score++;
+        }
+
+
     }
+
     console.log(`Score ${score}`);
 
+// Next question 
     currentQuestionIndex++;
 
     if (currentQuestionIndex < questions.length) {
@@ -136,6 +225,7 @@ function handleNextQuestion(event) {
     }
 }
 
+// Ending the quiz and results 
 function endQuiz() {
     textBoxElement.classList.remove('hide');
     textBoxElement.innerText = `Quiz finished! \n Your score is ${score}/${questions.length} = ${Math.round(100 * score/questions.length)}%`;
@@ -152,6 +242,7 @@ function endQuiz() {
     restartButton.classList.remove('hide');
 }
 
+// DARK MODE 
 function switchDarkmode() {
     if(isDarkmode) {
         isDarkmode = false;
