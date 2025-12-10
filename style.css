@@ -3,5 +3,109 @@
 }
 
 body {
-    background-color: #fff;
+    background-color: white;
+    color: black;
+    font-family:'Courier New', Courier, monospace;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+}
+
+.quiz-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    font-family: "Bebas Neue", Arial, Helvetica, sans-serif;
+    font-size: 50px;
+    letter-spacing: 3px;
+    margin: 0;
+}
+
+p {
+    font-family: "Bebas Neue", Arial, Helvetica, sans-serif;
+    font-size: 35px;
+    letter-spacing: 3px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+
+#question {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#options label {
+    display: block;
+    cursor: pointer;
+
+}
+
+.question-box {
+    width: 800px;
+    max-width: 80%;
+    border-radius: 10px;
+    background-color: rgb(237, 187, 169);
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.darkmode-btn {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background-color: midnightblue;
+    color: white;
+}
+
+.btn { 
+    padding: 8px 16px;
+    margin: 8px 4px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    border: solid;
+}
+
+.start-btn, .restart-btn, .next-btn {
+    background-color: #f3f3f3; 
+    font-family: "Bebas Neue", Arial, Helvetica, sans-serif;
+    letter-spacing: 3px;
+
+}
+
+.start-btn, .restart-btn {
+    font-size: 35px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.next-btn {
+    font-size: 20px;
 }

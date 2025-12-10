@@ -4,24 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ankademin Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="index.js" defer></script>
     
 </head>
 <body>
     <button id="darkmode-btn" class="darkmode-btn btn" type="button"> 🌙 Dark Mode</button>
-    <h1>Film Quiz</h1>
-    <div id="question-box">
-        <p id="text-box">Press 'Start' to begin quiz!</p>
+    <div class="quiz-container">
+        <div class="title">
+            <h1>Film Quiz 🎞️</h1>
+        </div>
+
+    <div id="question-box" class="question-box">
+        <p id="text-box">Tryck på 'Start' för att börja quizet!</p>
         <button id="start-btn" class="start-btn btn">Start</button>
-        <button id="restart-btn" class="restart-btn btn hide" type="button">Restart</button>
+        <button id="restart-btn" class="restart-btn btn hide" type="button">Starta om</button>
 
         <form id="optionsForm">
             <div id="question"></div>
             <div id="options"></div>
-            <button id="next-btn" class="next-btn btn hide" type="button">Next</button>
+            <button id="next-btn" class="next-btn btn hide" type="button">Nästa</button>
         </form>
     </div>
+</div>
 
 
 

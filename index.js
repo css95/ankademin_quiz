@@ -10,7 +10,7 @@ const questions = [
     },
     {
         text: "För vilken film vann Leonardo DiCaprio en Oscar?",
-        options: ["Titanic", "Blood Diamond", "The Revenant", "The Woolf of Wall Street"],
+        options: ["Titanic", "Blood Diamond", "The Revenant", "The Wolf of Wall Street"],
         correctIndex: 2,
         type: 1
     },
@@ -20,41 +20,49 @@ const questions = [
         correctIndex: [1, 2],
         type: 2
     },
-    // {
-    //     text: "4. Harry Potter filmerna är baserade på böcker skrivna av J.R.R. Tolkien.",
-    //     options: ["true", "false"],
-    //     correctIndex: 1
-    // },
-    // {
-    //     text: "5. Saga om ringen-trilogin spelades in samtidigt.",
-    //     options: ["true", "false"],
-    //     correctIndex: 0
-    // },
-    // {
-    //     text: "6. Alla Studio Ghibli filmer är regisserade av Hayao Miyazaki.",
-    //     options: ["true", "false"],
-    //     correctIndex: 1
-    // },
-    // {
-    //     text: "7. Originalversionen av Blade Runner hade flera olika slut beroende på region.",
-    //     options: ["true", "false"],
-    //     correctIndex: 0
-    // },
-    // {
-    //     text: "8. Det finns fler Marvel-filmer än James Bond-filmer",
-    //     options: ["true", "false"],
-    //     correctIndex: 0
-    // },
-    // {
-    //     text: "9. Filmen Parasite var den första icke-engelspråkiga filmen som vann Oscar för bästa film.",
-    //     options: ["true", "false"],
-    //     correctIndex: 0
-    // },
-    // {
-    //     text: "10. Ljudfilmen slog igenom kommersiellt efter filmen The Jazz Singer(1927).",
-    //     options: ["true", "false"],
-    //     correctIndex: 0
-    // }
+    {
+        text: "Avatar är regisserad av Steven Spielberg.",
+        options: ["true", "false"],
+        correctIndex: 1,
+        type: 0
+    },
+    {
+        text: "Vilket år släpptes första Star Wars-filmen?",
+        options: ["1975", "1977", "1980", "1983"],
+        correctIndex: 1,
+        type: 1
+    },
+    {
+        text: "Vilka av dessa skådespelare har spelat James Bond?",
+        options: ["Sean Connery", "Daniel Craig", "Tom Cruise", "Pierce Brosnan"],
+        correctIndex: [0, 1, 3],
+        type: 2
+    },
+    {
+        text: "Alla Studio Ghibli filmer är regisserade av Hayao Miyazaki.",
+        options: ["true", "false"],
+        correctIndex: 1,
+        type: 0
+    },
+    {
+        text: "Vilken film är baserad på en bok av Stephen King?",
+        options: ["The Shining", "Inception", "Avatar", "Interstellar"],
+        correctIndex: 0,
+        type: 1
+    },
+    {
+        text: "Vilka av dessa filmer utspelar sig helt eller delvis i rymden?",
+        options: ["Gravity", "Interstellar", "The Martian", "The Godfather"],
+        correctIndex: [0, 1, 2],
+        type: 2
+    },
+    {
+        text: "Filmen Parasite var den första icke-engelspråkiga filmen som vann Oscar för bästa film.",
+        options: ["true", "false"],
+        correctIndex: 0,
+        type: 0
+    },
+
 ];
 
 // GETTING ELEMENTS FROM THE HTML 
@@ -64,13 +72,13 @@ const optionsElement = document.getElementById('options');
 const textBoxElement = document.getElementById('text-box');
 const bodyElement = document.querySelector('body');
 const h1Element = document.querySelector('h1');
+const form = document.getElementById('optionsForm');
 
 // ALL BUTTON ELEMENTS
 const darkmodeButton = document.getElementById('darkmode-btn');
 const startButton = document.getElementById('start-btn');
 const nextButton = document.getElementById('next-btn');
 const restartButton = document.getElementById('restart-btn');
-const form = document.getElementById('optionsForm');
 
 // VARIABLES
 let score = 0;
@@ -79,7 +87,7 @@ let isDarkmode = false;
 
 // EVENT LISTENERS
 startButton.addEventListener('click', startQuiz);
-nextButton.addEventListener('click', handleNextQuestion);
+nextButton.addEventListener('click', checkAnswerAndNextQuestion);
 restartButton.addEventListener('click', startQuiz);
 darkmodeButton.addEventListener('click', switchDarkmode);
 
@@ -153,7 +161,7 @@ function showQuestion() {
 
 // HANDLE THE NEXT QUESTION 
 // Answering, submitting and next question 
-function handleNextQuestion() {
+function checkAnswerAndNextQuestion() {
     
     const currentQuestion = questions[currentQuestionIndex];
 
@@ -177,7 +185,7 @@ function handleNextQuestion() {
     } else if (currentQuestion.type === 2) {
 
         const answers = form.elements['answer'];
-        const correctIndexes = currentQuestion.correctIndex;;
+        const correctIndexes = currentQuestion.correctIndex;
         let selectedIndexes = [];
 
         for(let i = 0; i < answers.length; i++) {
@@ -210,7 +218,6 @@ function handleNextQuestion() {
             score++;
         }
 
-
     }
 
     console.log(`Score ${score}`);
@@ -225,16 +232,16 @@ function handleNextQuestion() {
     }
 }
 
-// Ending the quiz and results 
+// Ending the quiz and show results 
 function endQuiz() {
     textBoxElement.classList.remove('hide');
-    textBoxElement.innerText = `Quiz finished! \n Your score is ${score}/${questions.length} = ${Math.round(100 * score/questions.length)}%`;
+    textBoxElement.innerText = `Quizet är klart!\n Ditt resultat är ${score}/${questions.length} = ${Math.round(100 * score/questions.length)}%`;
     form.classList.add('hide');
 
     if (score/questions.length < 0.5) {
         textBoxElement.style.color = "#ff0000ff";
     } else if (score/questions.length <= 0.75) {
-        textBoxElement.style.color = "#ffb700ff";
+        textBoxElement.style.color = "#dd9400ff";
     } else {
         textBoxElement.style.color = "#00920cff";
     }
@@ -251,21 +258,20 @@ function switchDarkmode() {
     }
     console.log(`Darkmode: ${isDarkmode}`);
 
-     if(isDarkmode) {
+     if(isDarkmode === true) {
         darkmodeButton.innerText = " ☀️ Light mode";
         bodyElement.style.backgroundColor = "#130042ff";
-        textBoxElement.style.color = "white";
+        questionBoxElement.style.backgroundColor = "rgba(151, 65, 0, 1)";
         questionElement.style.color = "white";
         optionsElement.style.color = "white";
         h1Element.style.color = "white";
     } else {
         darkmodeButton.innerText = " 🌙 Dark Mode";
-        bodyElement.style.backgroundColor = "#fff";
-        textBoxElement.style.color = "black";
+        bodyElement.style.backgroundColor = "#ffffffff";
+        questionBoxElement.style.backgroundColor = "rgba(233, 184, 166, 1)";
         questionElement.style.color = "black";
         optionsElement.style.color = "black";
         h1Element.style.color = "black";
     }
-
-
 }
+
