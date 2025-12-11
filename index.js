@@ -26,42 +26,42 @@ const questions = [
         correctIndex: 1,
         type: 0
     },
-    {
-        text: "Vilket år släpptes första Star Wars-filmen?",
-        options: ["1975", "1977", "1980", "1983"],
-        correctIndex: 1,
-        type: 1
-    },
-    {
-        text: "Vilka av dessa skådespelare har spelat James Bond?",
-        options: ["Sean Connery", "Daniel Craig", "Tom Cruise", "Pierce Brosnan"],
-        correctIndex: [0, 1, 3],
-        type: 2
-    },
-    {
-        text: "Alla Studio Ghibli filmer är regisserade av Hayao Miyazaki.",
-        options: ["sant", "falsk"],
-        correctIndex: 1,
-        type: 0
-    },
-    {
-        text: "Vilken film är baserad på en bok av Stephen King?",
-        options: ["The Shining", "Inception", "Avatar", "Interstellar"],
-        correctIndex: 0,
-        type: 1
-    },
-    {
-        text: "Vilka av dessa filmer utspelar sig helt eller delvis i rymden?",
-        options: ["Gravity", "Interstellar", "The Martian", "The Godfather"],
-        correctIndex: [0, 1, 2],
-        type: 2
-    },
-    {
-        text: "Filmen Parasite var den första icke-engelspråkiga filmen som vann Oscar för bästa film.",
-        options: ["sant", "falsk"],
-        correctIndex: 0,
-        type: 0
-    },
+    // {
+    //     text: "Vilket år släpptes första Star Wars-filmen?",
+    //     options: ["1975", "1977", "1980", "1983"],
+    //     correctIndex: 1,
+    //     type: 1
+    // },
+    // {
+    //     text: "Vilka av dessa skådespelare har spelat James Bond?",
+    //     options: ["Sean Connery", "Daniel Craig", "Tom Cruise", "Pierce Brosnan"],
+    //     correctIndex: [0, 1, 3],
+    //     type: 2
+    // },
+    // {
+    //     text: "Alla Studio Ghibli filmer är regisserade av Hayao Miyazaki.",
+    //     options: ["sant", "falsk"],
+    //     correctIndex: 1,
+    //     type: 0
+    // },
+    // {
+    //     text: "Vilken film är baserad på en bok av Stephen King?",
+    //     options: ["The Shining", "Inception", "Avatar", "Interstellar"],
+    //     correctIndex: 0,
+    //     type: 1
+    // },
+    // {
+    //     text: "Vilka av dessa filmer utspelar sig helt eller delvis i rymden?",
+    //     options: ["Gravity", "Interstellar", "The Martian", "The Godfather"],
+    //     correctIndex: [0, 1, 2],
+    //     type: 2
+    // },
+    // {
+    //     text: "Filmen Parasite var den första icke-engelspråkiga filmen som vann Oscar för bästa film.",
+    //     options: ["sant", "falsk"],
+    //     correctIndex: 0,
+    //     type: 0
+    // },
 
 ];
 
@@ -259,17 +259,24 @@ function checkAnswerAndNextQuestion() {
 // END THE QUIZ
 function endQuiz() {
     textBoxElement.classList.remove('hide');
-    textBoxElement.innerText = `Quizet är klart!\n Ditt resultat är ${score}/${questions.length} = ${Math.round(100 * score/questions.length)}%`;
-    form.classList.add('hide');
 
-    if (score/questions.length < 0.5) {
+    const percentage = Math.round(100 * score / questions.length);
+    let messageToUser = "";
+
+    if (percentage < 50) {
+        messageToUser = "Underkänt";
         textBoxElement.style.color = "#ff0000ff";
-    } else if (score/questions.length <= 0.75) {
+    } else if (percentage <= 75) {
+        messageToUser = "Bra";
         textBoxElement.style.color = "#dd9400ff";
     } else {
+        messageToUser = "Riktigt bra jobbat";
         textBoxElement.style.color = "#00920cff";
     }
 
+    textBoxElement.innerText = `Quizet är klart.\n Ditt resultat är ${score}/${questions.length} = ${percentage}%.\n ${messageToUser}!`;
+    
+    form.classList.add('hide');
     restartButton.classList.remove('hide');
     resultButton.classList.remove('hide');
 
