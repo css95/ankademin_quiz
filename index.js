@@ -95,7 +95,7 @@ let userAnswers = Array.from({ length: questions.length }, function () {
 
 // EVENT LISTENERS
 startButton.addEventListener('click', startQuiz);
-nextButton.addEventListener('click', checkAnswerAndNextQuestion);
+nextButton.addEventListener('click', checkAnswer);
 restartButton.addEventListener('click', startQuiz);
 darkmodeButton.addEventListener('click', switchDarkmode);
 resultButton.addEventListener('click', showResult);
@@ -114,7 +114,7 @@ function startQuiz() {
     textBoxElement.classList.add('hide');
     resultButton.classList.add('hide');
     resultBoxElement.innerHTML = "";
-    
+
     currentQuestionIndex = 0;
     score = 0;
     userAnswers = Array.from({ length: questions.length }, function () {
@@ -180,7 +180,7 @@ function showQuestion() {
 
 // HANDLE THE NEXT QUESTION 
 // Answering question, storing user's answer
-function checkAnswerAndNextQuestion() {
+function checkAnswer() {
     
     const currentQuestion = questions[currentQuestionIndex];
 
