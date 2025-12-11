@@ -26,42 +26,42 @@ const questions = [
         correctIndex: 1,
         type: 0
     },
-    // {
-    //     text: "Vilket år släpptes första Star Wars-filmen?",
-    //     options: ["1975", "1977", "1980", "1983"],
-    //     correctIndex: 1,
-    //     type: 1
-    // },
-    // {
-    //     text: "Vilka av dessa skådespelare har spelat James Bond?",
-    //     options: ["Sean Connery", "Daniel Craig", "Tom Cruise", "Pierce Brosnan"],
-    //     correctIndex: [0, 1, 3],
-    //     type: 2
-    // },
-    // {
-    //     text: "Alla Studio Ghibli filmer är regisserade av Hayao Miyazaki.",
-    //     options: ["sant", "falsk"],
-    //     correctIndex: 1,
-    //     type: 0
-    // },
-    // {
-    //     text: "Vilken film är baserad på en bok av Stephen King?",
-    //     options: ["The Shining", "Inception", "Avatar", "Interstellar"],
-    //     correctIndex: 0,
-    //     type: 1
-    // },
-    // {
-    //     text: "Vilka av dessa filmer utspelar sig helt eller delvis i rymden?",
-    //     options: ["Gravity", "Interstellar", "The Martian", "The Godfather"],
-    //     correctIndex: [0, 1, 2],
-    //     type: 2
-    // },
-    // {
-    //     text: "Filmen Parasite var den första icke-engelspråkiga filmen som vann Oscar för bästa film.",
-    //     options: ["sant", "falsk"],
-    //     correctIndex: 0,
-    //     type: 0
-    // },
+    {
+        text: "Vilket år släpptes första Star Wars-filmen?",
+        options: ["1975", "1977", "1980", "1983"],
+        correctIndex: 1,
+        type: 1
+    },
+    {
+        text: "Vilka av dessa skådespelare har spelat James Bond?",
+        options: ["Sean Connery", "Daniel Craig", "Tom Cruise", "Pierce Brosnan"],
+        correctIndex: [0, 1, 3],
+        type: 2
+    },
+    {
+        text: "Alla Studio Ghibli filmer är regisserade av Hayao Miyazaki.",
+        options: ["sant", "falsk"],
+        correctIndex: 1,
+        type: 0
+    },
+    {
+        text: "Vilken film är baserad på en bok av Stephen King?",
+        options: ["The Shining", "Inception", "Avatar", "Interstellar"],
+        correctIndex: 0,
+        type: 1
+    },
+    {
+        text: "Vilka av dessa filmer utspelar sig helt eller delvis i rymden?",
+        options: ["Gravity", "Interstellar", "The Martian", "The Godfather"],
+        correctIndex: [0, 1, 2],
+        type: 2
+    },
+    {
+        text: "Filmen Parasite var den första icke-engelspråkiga filmen som vann Oscar för bästa film.",
+        options: ["sant", "falsk"],
+        correctIndex: 0,
+        type: 0
+    },
 
 ];
 
@@ -112,6 +112,9 @@ function startQuiz() {
     form.classList.remove('hide');
     restartButton.classList.add('hide');
     textBoxElement.classList.add('hide');
+    resultButton.classList.add('hide');
+    resultBoxElement.innerHTML = "";
+    
     currentQuestionIndex = 0;
     score = 0;
     userAnswers = Array.from({ length: questions.length }, function () {
@@ -120,7 +123,6 @@ function startQuiz() {
             isCorrect: []
         };
     });
-    resultBoxElement.innerHTML = "";
 
     showQuestion();
 }
