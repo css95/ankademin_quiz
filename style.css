@@ -101,14 +101,14 @@ h1 {
     border: solid;
 }
 
-.start-btn, .restart-btn, .next-btn {
+.start-btn, .restart-btn, .next-btn, .result-btn {
     background-color: #f3f3f3; 
     font-family: "Bebas Neue", Arial, Helvetica, sans-serif;
     letter-spacing: 3px;
 
 }
 
-.start-btn, .restart-btn {
+.start-btn, .restart-btn, .result-btn {
     font-size: 35px;
     margin-left: 100px;
     margin-right: 100px;

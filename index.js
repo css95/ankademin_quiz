@@ -1,10 +1,10 @@
 // QUIZ QUESTIONS 
-// Quiz questions have 3 types: true/false[0], multiple choice[1], or multiple correct answers/checkbox[2].
+// Quiz questions have 3 types: true/false[0], multiple choice[1], or multiple correct answers[2].
 // Type 0 and 1 use radio buttons, type 2 uses checkboxes. 
 const questions = [
     {
         text: "Filmen Titanic släpptes år 1997.",
-        options: ["true", "false"],
+        options: ["sant", "falsk"],
         correctIndex: 0,
         type: 0
     },
@@ -20,48 +20,48 @@ const questions = [
         correctIndex: [1, 2],
         type: 2
     },
-    // {
-    //     text: "Avatar är regisserad av Steven Spielberg.",
-    //     options: ["true", "false"],
-    //     correctIndex: 1,
-    //     type: 0
-    // },
-    // {
-    //     text: "Vilket år släpptes första Star Wars-filmen?",
-    //     options: ["1975", "1977", "1980", "1983"],
-    //     correctIndex: 1,
-    //     type: 1
-    // },
-    // {
-    //     text: "Vilka av dessa skådespelare har spelat James Bond?",
-    //     options: ["Sean Connery", "Daniel Craig", "Tom Cruise", "Pierce Brosnan"],
-    //     correctIndex: [0, 1, 3],
-    //     type: 2
-    // },
-    // {
-    //     text: "Alla Studio Ghibli filmer är regisserade av Hayao Miyazaki.",
-    //     options: ["true", "false"],
-    //     correctIndex: 1,
-    //     type: 0
-    // },
-    // {
-    //     text: "Vilken film är baserad på en bok av Stephen King?",
-    //     options: ["The Shining", "Inception", "Avatar", "Interstellar"],
-    //     correctIndex: 0,
-    //     type: 1
-    // },
-    // {
-    //     text: "Vilka av dessa filmer utspelar sig helt eller delvis i rymden?",
-    //     options: ["Gravity", "Interstellar", "The Martian", "The Godfather"],
-    //     correctIndex: [0, 1, 2],
-    //     type: 2
-    // },
-    // {
-    //     text: "Filmen Parasite var den första icke-engelspråkiga filmen som vann Oscar för bästa film.",
-    //     options: ["true", "false"],
-    //     correctIndex: 0,
-    //     type: 0
-    // },
+    {
+        text: "Avatar är regisserad av Steven Spielberg.",
+        options: ["sant", "falsk"],
+        correctIndex: 1,
+        type: 0
+    },
+    {
+        text: "Vilket år släpptes första Star Wars-filmen?",
+        options: ["1975", "1977", "1980", "1983"],
+        correctIndex: 1,
+        type: 1
+    },
+    {
+        text: "Vilka av dessa skådespelare har spelat James Bond?",
+        options: ["Sean Connery", "Daniel Craig", "Tom Cruise", "Pierce Brosnan"],
+        correctIndex: [0, 1, 3],
+        type: 2
+    },
+    {
+        text: "Alla Studio Ghibli filmer är regisserade av Hayao Miyazaki.",
+        options: ["sant", "falsk"],
+        correctIndex: 1,
+        type: 0
+    },
+    {
+        text: "Vilken film är baserad på en bok av Stephen King?",
+        options: ["The Shining", "Inception", "Avatar", "Interstellar"],
+        correctIndex: 0,
+        type: 1
+    },
+    {
+        text: "Vilka av dessa filmer utspelar sig helt eller delvis i rymden?",
+        options: ["Gravity", "Interstellar", "The Martian", "The Godfather"],
+        correctIndex: [0, 1, 2],
+        type: 2
+    },
+    {
+        text: "Filmen Parasite var den första icke-engelspråkiga filmen som vann Oscar för bästa film.",
+        options: ["sant", "falsk"],
+        correctIndex: 0,
+        type: 0
+    },
 
 ];
 
@@ -84,14 +84,14 @@ const resultButton = document.getElementById('result-btn');
 
 // VARIABLES
 let score = 0;
+let currentQuestionIndex = 0; 
+let isDarkmode = false;
 let userAnswers = Array.from({ length: questions.length }, function () {
     return {
         answer: [],
         isCorrect: []
     };
 });
-let currentQuestionIndex = 0; 
-let isDarkmode = false;
 
 // EVENT LISTENERS
 startButton.addEventListener('click', startQuiz);
@@ -104,7 +104,7 @@ resultButton.addEventListener('click', showResult);
 // FUNCTIONS
 
 // START QUIZ
-// Start the quiz, hide buttons, set score to 0
+// Start the quiz, remove or add 'hide' for buttons, set score to 0, reset stored user answers
 function startQuiz() {
     console.log('Started');
     startButton.classList.add('hide');
@@ -114,7 +114,6 @@ function startQuiz() {
     textBoxElement.classList.add('hide');
     currentQuestionIndex = 0;
     score = 0;
-
     userAnswers = Array.from({ length: questions.length }, function () {
         return {
             answer: [],
@@ -178,7 +177,7 @@ function showQuestion() {
 }
 
 // HANDLE THE NEXT QUESTION 
-// Answering, submitting and next question 
+// Answering question, storing user's answer
 function checkAnswerAndNextQuestion() {
     
     const currentQuestion = questions[currentQuestionIndex];
@@ -203,7 +202,7 @@ function checkAnswerAndNextQuestion() {
             userAnswers[currentQuestionIndex].isCorrect = false;
         }
 
-// Answers of type 2 (checkboxes with multiple correct answers)
+    // Answers of type 2 (checkboxes with multiple correct answers)
     } else if (currentQuestion.type === 2) {
 
         const answers = form.elements['answer'];
@@ -247,7 +246,7 @@ function checkAnswerAndNextQuestion() {
 
     console.log(`Score ${score}`);
 
-// Next question 
+    // Next question 
     currentQuestionIndex++;
 
     if (currentQuestionIndex < questions.length) {
@@ -257,7 +256,7 @@ function checkAnswerAndNextQuestion() {
     }
 }
 
-// Ending the quiz and show results 
+// END THE QUIZ
 function endQuiz() {
     textBoxElement.classList.remove('hide');
     textBoxElement.innerText = `Quizet är klart!\n Ditt resultat är ${score}/${questions.length} = ${Math.round(100 * score/questions.length)}%`;
@@ -276,6 +275,7 @@ function endQuiz() {
 
 }
 
+// SHOW THE RESULTS
 function showResult() {
     resultButton.classList.add('hide');
     textBoxElement.innerHTML += "\n";
@@ -285,9 +285,9 @@ function showResult() {
     let color = "";
     for (let i = 0; i < questions.length; i ++) {
         if (userAnswers[i].isCorrect) {
-            color = "#0f3a0dff";
+            color = "#023b00ff";
         } else {
-            color = "#e50909ff";
+            color = "#560404ff";
         }
 
         resultText = "";
