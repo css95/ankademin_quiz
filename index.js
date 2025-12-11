@@ -20,48 +20,48 @@ const questions = [
         correctIndex: [1, 2],
         type: 2
     },
-    {
-        text: "Avatar är regisserad av Steven Spielberg.",
-        options: ["true", "false"],
-        correctIndex: 1,
-        type: 0
-    },
-    {
-        text: "Vilket år släpptes första Star Wars-filmen?",
-        options: ["1975", "1977", "1980", "1983"],
-        correctIndex: 1,
-        type: 1
-    },
-    {
-        text: "Vilka av dessa skådespelare har spelat James Bond?",
-        options: ["Sean Connery", "Daniel Craig", "Tom Cruise", "Pierce Brosnan"],
-        correctIndex: [0, 1, 3],
-        type: 2
-    },
-    {
-        text: "Alla Studio Ghibli filmer är regisserade av Hayao Miyazaki.",
-        options: ["true", "false"],
-        correctIndex: 1,
-        type: 0
-    },
-    {
-        text: "Vilken film är baserad på en bok av Stephen King?",
-        options: ["The Shining", "Inception", "Avatar", "Interstellar"],
-        correctIndex: 0,
-        type: 1
-    },
-    {
-        text: "Vilka av dessa filmer utspelar sig helt eller delvis i rymden?",
-        options: ["Gravity", "Interstellar", "The Martian", "The Godfather"],
-        correctIndex: [0, 1, 2],
-        type: 2
-    },
-    {
-        text: "Filmen Parasite var den första icke-engelspråkiga filmen som vann Oscar för bästa film.",
-        options: ["true", "false"],
-        correctIndex: 0,
-        type: 0
-    },
+    // {
+    //     text: "Avatar är regisserad av Steven Spielberg.",
+    //     options: ["true", "false"],
+    //     correctIndex: 1,
+    //     type: 0
+    // },
+    // {
+    //     text: "Vilket år släpptes första Star Wars-filmen?",
+    //     options: ["1975", "1977", "1980", "1983"],
+    //     correctIndex: 1,
+    //     type: 1
+    // },
+    // {
+    //     text: "Vilka av dessa skådespelare har spelat James Bond?",
+    //     options: ["Sean Connery", "Daniel Craig", "Tom Cruise", "Pierce Brosnan"],
+    //     correctIndex: [0, 1, 3],
+    //     type: 2
+    // },
+    // {
+    //     text: "Alla Studio Ghibli filmer är regisserade av Hayao Miyazaki.",
+    //     options: ["true", "false"],
+    //     correctIndex: 1,
+    //     type: 0
+    // },
+    // {
+    //     text: "Vilken film är baserad på en bok av Stephen King?",
+    //     options: ["The Shining", "Inception", "Avatar", "Interstellar"],
+    //     correctIndex: 0,
+    //     type: 1
+    // },
+    // {
+    //     text: "Vilka av dessa filmer utspelar sig helt eller delvis i rymden?",
+    //     options: ["Gravity", "Interstellar", "The Martian", "The Godfather"],
+    //     correctIndex: [0, 1, 2],
+    //     type: 2
+    // },
+    // {
+    //     text: "Filmen Parasite var den första icke-engelspråkiga filmen som vann Oscar för bästa film.",
+    //     options: ["true", "false"],
+    //     correctIndex: 0,
+    //     type: 0
+    // },
 
 ];
 
@@ -70,6 +70,7 @@ const questionBoxElement = document.getElementById('question-box');
 const questionElement = document.getElementById('question');
 const optionsElement = document.getElementById('options');
 const textBoxElement = document.getElementById('text-box');
+const resultBoxElement = document.getElementById('result-box');
 const bodyElement = document.querySelector('body');
 const h1Element = document.querySelector('h1');
 const form = document.getElementById('optionsForm');
@@ -79,9 +80,16 @@ const darkmodeButton = document.getElementById('darkmode-btn');
 const startButton = document.getElementById('start-btn');
 const nextButton = document.getElementById('next-btn');
 const restartButton = document.getElementById('restart-btn');
+const resultButton = document.getElementById('result-btn');
 
 // VARIABLES
 let score = 0;
+let userAnswers = Array.from({ length: questions.length }, function () {
+    return {
+        answer: [],
+        isCorrect: []
+    };
+});
 let currentQuestionIndex = 0; 
 let isDarkmode = false;
 
@@ -90,6 +98,7 @@ startButton.addEventListener('click', startQuiz);
 nextButton.addEventListener('click', checkAnswerAndNextQuestion);
 restartButton.addEventListener('click', startQuiz);
 darkmodeButton.addEventListener('click', switchDarkmode);
+resultButton.addEventListener('click', showResult);
 
 
 // FUNCTIONS
@@ -105,6 +114,15 @@ function startQuiz() {
     textBoxElement.classList.add('hide');
     currentQuestionIndex = 0;
     score = 0;
+
+    userAnswers = Array.from({ length: questions.length }, function () {
+        return {
+            answer: [],
+            isCorrect: []
+        };
+    });
+    resultBoxElement.innerHTML = "";
+
     showQuestion();
 }
 
@@ -176,9 +194,13 @@ function checkAnswerAndNextQuestion() {
         }
 
         const selectedIndex = parseInt(selectedAnswer, 10);
+        userAnswers[currentQuestionIndex].answer = selectedIndex;
 
         if (selectedIndex === currentQuestion.correctIndex) {
             score++;
+            userAnswers[currentQuestionIndex].isCorrect = true;
+        } else {
+            userAnswers[currentQuestionIndex].isCorrect = false;
         }
 
 // Answers of type 2 (checkboxes with multiple correct answers)
@@ -218,6 +240,9 @@ function checkAnswerAndNextQuestion() {
             score++;
         }
 
+        userAnswers[currentQuestionIndex].answer = selectedIndexes;
+        userAnswers[currentQuestionIndex].isCorrect = isCorrect;
+
     }
 
     console.log(`Score ${score}`);
@@ -247,6 +272,50 @@ function endQuiz() {
     }
 
     restartButton.classList.remove('hide');
+    resultButton.classList.remove('hide');
+
+}
+
+function showResult() {
+    resultButton.classList.add('hide');
+    textBoxElement.innerHTML += "\n";
+    resultBoxElement.innerHTML = "";
+
+    let resultText = "";
+    let color = "";
+    for (let i = 0; i < questions.length; i ++) {
+        if (userAnswers[i].isCorrect) {
+            color = "#0f3a0dff";
+        } else {
+            color = "#e50909ff";
+        }
+
+        resultText = "";
+        resultText += `<span style="color: ${color}">`;
+        resultText += "<br>";
+        resultText += `${i+1}. ${questions[i].text}<br>`;
+        resultText += `Korrekt svar:<br>`;
+
+        if (questions[i].type == 0 || questions[i].type == 1) {
+            resultText += `${questions[i].options[questions[i].correctIndex]}<br>`;
+        } else {
+            for (let j = 0; j < questions[i].correctIndex.length; j++) {
+                resultText += `${questions[i].options[questions[i].correctIndex[j]]}<br>`;
+            }
+        }
+        
+        resultText += `Ditt svar:<br>`;
+        if (questions[i].type == 0 || questions[i].type == 1) {
+            resultText += `${questions[i].options[userAnswers[i].answer]}<br>`;
+        } else {
+            for (let j = 0; j < userAnswers[i].answer.length; j++) {
+                resultText += `${questions[i].options[userAnswers[i].answer[j]]}<br>`;
+            }
+        }
+
+        resultText += `</span><br>`;
+        resultBoxElement.innerHTML += resultText;
+    }
 }
 
 // DARK MODE 
@@ -259,7 +328,7 @@ function switchDarkmode() {
     console.log(`Darkmode: ${isDarkmode}`);
 
      if(isDarkmode === true) {
-        darkmodeButton.innerText = " ☀️ Light mode";
+        darkmodeButton.innerText = " ☀️ Light Mode";
         bodyElement.style.backgroundColor = "#130042ff";
         questionBoxElement.style.backgroundColor = "rgba(151, 65, 0, 1)";
         questionElement.style.color = "white";
